@@ -1,0 +1,202 @@
+from __future__ import annotations
+
+from pathlib import Path
+from typing import Dict, List, Optional, Tuple
+
+from PIL import Image, ImageDraw, ImageFont
+
+
+def _find_font(language: str, size: int) -> ImageFont.FreeTypeFont:
+    """Best-effort font lookup. Falls back to Pillow default."""
+    candidates: List[Tuple[str, int]] = []
+    if language == "zh":
+        candidates = [
+            ("/System/Library/Fonts/PingFang.ttc", size),
+            ("/System/Library/Fonts/STHeiti Light.ttc", size),
+            ("/usr/share/fonts/truetype/wqy/wqy-zenhei.ttc", size),
+        ]
+    else:
+        candidates = [
+            ("/Library/Fonts/Arial.ttf", size),
+            ("/System/Library/Fonts/Supplemental/Arial.ttf", size),
+            ("/System/Library/Fonts/Helvetica.ttc", size),
+            ("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", size),
+        ]
+
+    for path, sz in candidates:
+        try:
+            return ImageFont.truetype(path, sz)
+        except Exception:
+            continue
+
+    try:
+        return ImageFont.truetype("arial.ttf", size)
+    except Exception:
+        return ImageFont.load_default()
+
+
+def _wrap_text(text: str, font: ImageFont.FreeTypeFont, max_width: int) -> List[str]:
+    words = text.split()
+    lines: List[str] = []
+    current = ""
+
+    for word in words:
+        test = f"{current} {word}".strip()
+        bbox = font.getbbox(test)
+        if bbox and bbox[2] <= max_width:
+            current = test
+        else:
+            if current:
+                lines.append(current)
+            current = word
+    if current:
+        lines.append(current)
+
+    # For CJK / no-space text, fall back to character wrapping if needed.
+    if not lines and text:
+        chars = list(text)
+        current = ""
+        for ch in chars:
+            test = current + ch
+            bbox = font.getbbox(test)
+            if bbox and bbox[2] <= max_width:
+                current = test
+            else:
+                if current:
+                    lines.append(current)
+                current = ch
+        if current:
+            lines.append(current)
+
+    return lines or [text]
+
+
+def _gradient_background(width: int, height: int, style: str) -> Image.Image:
+    palettes = {
+        "business": ((15, 23, 42), (30, 58, 138)),
+        "education": ((20, 50, 60), (40, 100, 120)),
+        "crypto_pitch": ((20, 0, 40), (60, 10, 100)),
+        "product_demo": ((10, 20, 30), (25, 55, 85)),
+    }
+    top, bottom = palettes.get(style, palettes["business"])
+    img = Image.new("RGB", (width, height), top)
+    draw = ImageDraw.Draw(img)
+    for y in range(height):
+        ratio = y / height
+        r = int(top[0] * (1 - ratio) + bottom[0] * ratio)
+        g = int(top[1] * (1 - ratio) + bottom[1] * ratio)
+        b = int(top[2] * (1 - ratio) + bottom[2] * ratio)
+        draw.line([(0, y), (width, y)], fill=(r, g, b))
+    return img
+
+
+def render_slide(
+    slide: Dict,
+    idx: int,
+    total: int,
+    style: str,
+    language: str,
+    watermark: bool,
+    caption: Optional[str] = None,
+    output_path: Path | None = None,
+) -> Image.Image:
+    """Render a single slide as a 1920x1080 image."""
+    W, H = 1920, 1080
+    img = _gradient_background(W, H, style)
+    draw = ImageDraw.Draw(img)
+
+    title_font = _find_font(language, 72)
+    bullet_font = _find_font(language, 44)
+    small_font = _find_font(language, 24)
+
+    margin_x = 120
+    margin_y = 100
+    content_width = W - margin_x * 2
+
+    # Title
+    title = slide.get("title") or ""
+    if title:
+        title_lines = _wrap_text(title, title_font, content_width)
+        y = margin_y
+        for line in title_lines[:2]:
+            draw.text((margin_x, y), line, font=title_font, fill=(255, 255, 255))
+            y += title_font.size + 20
+        y += 40
+    else:
+        y = margin_y + 60
+
+    # Bullets
+    bullets = slide.get("bullets") or []
+    line_height = bullet_font.size + 18
+    for bullet in bullets[:8]:
+        wrapped = _wrap_text(bullet, bullet_font, content_width - 60)
+        for line in wrapped[:2]:
+            draw.text((margin_x + 50, y), f"• {line}", font=bullet_font, fill=(220, 230, 255))
+            y += line_height
+        y += 10
+
+    # Caption / subtitle overlay at bottom.
+    if caption:
+        caption_font = _find_font(language, 32)
+        caption_lines = _wrap_text(caption, caption_font, content_width)
+        box_h = (caption_font.size + 10) * len(caption_lines) + 30
+        draw.rectangle(
+            [(0, H - box_h - 20), (W, H)],
+            fill=(0, 0, 0, 160),
+        )
+        cy = H - box_h
+        for line in caption_lines[:3]:
+            draw.text((margin_x, cy), line, font=caption_font, fill=(255, 255, 200))
+            cy += caption_font.size + 10
+
+    # Watermark
+    if watermark:
+        draw.text(
+            (W - 280, H - 50),
+            "Generated by PitchFlow Agent",
+            font=small_font,
+            fill=(180, 180, 180),
+        )
+
+    # Slide counter
+    draw.text(
+        (W - 140, 40),
+        f"{idx + 1}/{total}",
+        font=small_font,
+        fill=(180, 180, 180),
+    )
+
+    if output_path:
+        img.save(output_path, "PNG")
+    return img
+
+
+def render_cover(
+    title: str,
+    subtitle: str,
+    style: str,
+    language: str,
+    output_path: Path,
+) -> Path:
+    """Render a dedicated cover image."""
+    W, H = 1920, 1080
+    img = _gradient_background(W, H, style)
+    draw = ImageDraw.Draw(img)
+
+    title_font = _find_font(language, 96)
+    subtitle_font = _find_font(language, 48)
+
+    content_width = W - 240
+
+    y = H // 3
+    for line in _wrap_text(title, title_font, content_width)[:2]:
+        draw.text((120, y), line, font=title_font, fill=(255, 255, 255))
+        y += title_font.size + 20
+
+    y += 40
+    for line in _wrap_text(subtitle, subtitle_font, content_width)[:3]:
+        draw.text((120, y), line, font=subtitle_font, fill=(200, 220, 255))
+        y += subtitle_font.size + 20
+
+    img.save(output_path, "PNG")
+    return output_path

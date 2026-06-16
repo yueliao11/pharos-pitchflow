@@ -1,0 +1,19 @@
+1
+00:00:00,000 --> 00:00:17,928
+Moving to 'Pharos Agent Economy'. High-performance EVM Layer 1 for Web2/Web3 fusion Built for RealFi, RWA, stablecoins and cross-chain interoperability Designed to support millions of autonomous AI Agents This is a key part of the value we are building onchain.
+
+2
+00:00:17,928 --> 00:00:36,408
+Moving to 'The Problem: Agents Cannot Explain Themselves'. Wallet analyzers, swaps and monitors only return JSON or text DAO members and users struggle to read raw on-chain data Project teams lack reusable, verifiable presentation tools This is a key part of the value we are building onchain.
+
+3
+00:00:36,408 --> 00:00:53,472
+Moving to 'PitchFlow: Agent Expression Layer'. Reusable Skill: any Agent can call Deck-to-Video API Generates narrated MP4, subtitles, cover and metadata Content hash registered on Pharos for provenance This is a key part of the value we are building onchain.
+
+4
+00:00:53,472 --> 00:01:09,672
+Moving to 'Composable On-chain Economy'. Wallet Analyzer → Report PPT → Narrated Video Payment / tipping via PaymentGate smart contract Distribution to Telegram, Discord, X and DAO forums This is a key part of the value we are building onchain.
+
+5
+00:01:09,672 --> 00:01:27,696
+Moving to 'Roadmap & Call to Action'. Skill stage: standard API + Pharos registry integration Agent Arena: full PitchFlow Agent with payments and social distribution Join us in building the communication infrastructure of Agent Economy This is a key part of the value we are building onchain.

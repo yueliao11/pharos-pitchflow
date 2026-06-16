@@ -1,0 +1,16 @@
+{
+  "name": "pharos-pitchflow",
+  "version": "1.0.0",
+  "description": "Agent Narrated Deck-to-Video Skill for the Pharos AI Agent Economy",
+  "scripts": {
+    "compile": "hardhat compile",
+    "test": "hardhat test",
+    "deploy:local": "hardhat run deploy.js --network hardhat",
+    "deploy:testnet": "hardhat run deploy.js --network pharos_testnet"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "dotenv": "^16.4.5",
+    "hardhat": "^2.22.0"
+  }
+}

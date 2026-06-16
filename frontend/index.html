@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PitchFlow · Agent Narrated Deck-to-Video Skill</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/ethers@6.9.0/dist/ethers.umd.min.js"></script>
+</head>
+<body>
+  <header>
+    <h1>🎬 PitchFlow</h1>
+    <p>Agent Narrated Deck-to-Video Skill for Pharos AI Agent Economy</p>
+  </header>
+
+  <main>
+    <section class="card">
+      <h2>1. Generate Video</h2>
+      <form id="generateForm">
+        <label>
+          Upload PPTX
+          <input type="file" id="pptxFile" accept=".pptx" required />
+        </label>
+
+        <div class="grid">
+          <label>
+            Style
+            <select id="videoStyle">
+              <option value="crypto_pitch" selected>Crypto Pitch</option>
+              <option value="business">Business</option>
+              <option value="education">Education</option>
+              <option value="product_demo">Product Demo</option>
+            </select>
+          </label>
+
+          <label>
+            Language
+            <select id="language">
+              <option value="en" selected>English</option>
+              <option value="zh">中文</option>
+              <option value="ja">日本語</option>
+              <option value="ko">한국어</option>
+            </select>
+          </label>
+
+          <label>
+            Voice
+            <select id="voice">
+              <option value="female_en" selected>Female EN</option>
+              <option value="male_en">Male EN</option>
+              <option value="female_zh">Female ZH</option>
+              <option value="male_zh">Male ZH</option>
+            </select>
+          </label>
+
+          <label>
+            Script Mode
+            <select id="scriptMode">
+              <option value="auto_from_slide_text" selected>Auto from slide text</option>
+              <option value="speaker_notes">Speaker notes</option>
+            </select>
+          </label>
+        </div>
+
+        <label class="inline">
+          <input type="checkbox" id="includeSubtitles" checked />
+          Include subtitles burned into video
+        </label>
+
+        <label class="inline">
+          <input type="checkbox" id="registerOnchain" />
+          Register content hash on Pharos
+        </label>
+
+        <button type="submit" id="generateBtn">Generate Video</button>
+      </form>
+
+      <div id="progress" class="hidden">
+        <div class="spinner"></div>
+        <p>Agent is narrating and rendering your video…</p>
+      </div>
+    </section>
+
+    <section class="card" id="resultCard" style="display:none;">
+      <h2>2. Preview & Download</h2>
+      <video id="previewVideo" controls></video>
+      <div class="links">
+        <a id="videoLink" href="#" target="_blank">MP4</a>
+        <a id="subtitleLink" href="#" target="_blank">SRT</a>
+        <a id="coverLink" href="#" target="_blank">Cover</a>
+        <a id="metadataLink" href="#" target="_blank">Metadata</a>
+      </div>
+      <pre id="resultJson"></pre>
+    </section>
+
+    <section class="card">
+      <h2>3. On-chain Payment / Tip</h2>
+      <button id="connectWallet">Connect MetaMask</button>
+      <p id="walletInfo" class="muted"></p>
+
+      <label>
+        PaymentGate Contract Address
+        <input type="text" id="paymentAddress" placeholder="0x..." />
+      </label>
+
+      <label>
+        Agent Address (beneficiary)
+        <input type="text" id="agentAddress" placeholder="0x..." />
+      </label>
+
+      <label>
+        Amount (native token)
+        <input type="number" id="tipAmount" step="0.001" value="0.01" />
+      </label>
+
+      <button id="tipBtn" disabled>Pay / Tip Agent</button>
+      <p id="txInfo" class="muted"></p>
+    </section>
+  </main>
+
+  <footer>
+    <p>Built for the Pharos AI Agent Hackathon · Skill-to-Agent Economy</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

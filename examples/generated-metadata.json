@@ -1,0 +1,22 @@
+{
+  "title": "Pharos Agent Economy",
+  "language": "en",
+  "voice": "female_en",
+  "style": "crypto_pitch",
+  "slides_count": 5,
+  "duration_seconds": 87.7,
+  "content_hash": "972a7fd44274b5b53743e9f0080782fa2db863d4fe0e7175dbcc41a5df480ea0",
+  "files": {
+    "video": "output.mp4",
+    "subtitle": "output.srt",
+    "cover": "cover.png",
+    "metadata": "metadata.json"
+  },
+  "narrations": [
+    "Moving to 'Pharos Agent Economy'. High-performance EVM Layer 1 for Web2/Web3 fusion Built for RealFi, RWA, stablecoins and cross-chain interoperability Designed to support millions of autonomous AI Agents This is a key part of the value we are building onchain.",
+    "Moving to 'The Problem: Agents Cannot Explain Themselves'. Wallet analyzers, swaps and monitors only return JSON or text DAO members and users struggle to read raw on-chain data Project teams lack reusable, verifiable presentation tools This is a key part of the value we are building onchain.",
+    "Moving to 'PitchFlow: Agent Expression Layer'. Reusable Skill: any Agent can call Deck-to-Video API Generates narrated MP4, subtitles, cover and metadata Content hash registered on Pharos for provenance This is a key part of the value we are building onchain.",
+    "Moving to 'Composable On-chain Economy'. Wallet Analyzer → Report PPT → Narrated Video Payment / tipping via PaymentGate smart contract Distribution to Telegram, Discord, X and DAO forums This is a key part of the value we are building onchain.",
+    "Moving to 'Roadmap & Call to Action'. Skill stage: standard API + Pharos registry integration Agent Arena: full PitchFlow Agent with payments and social distribution Join us in building the communication infrastructure of Agent Economy This is a key part of the value we are building onchain."
+  ]
+}
