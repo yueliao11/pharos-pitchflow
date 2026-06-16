@@ -150,7 +150,7 @@ python examples/generate_demo.py
 ```
 
 You will get:
-- `examples/pitchflow-demo-video.mp4` — narrated product intro + auto-generated pitch video
+- `examples/pitchflow-demo-video.mp4` — real screen recording of the running frontend + English narration
 - `examples/generated-output.mp4` — the auto-generated pitch video only
 - `examples/generated-output.srt`
 - `examples/generated-cover.png`
