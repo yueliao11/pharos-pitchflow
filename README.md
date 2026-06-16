@@ -79,10 +79,15 @@ pharos-pitchflow/
 │   ├── pharos-agent-weekly-report.pptx
 │   ├── generate_sample_ppt.py
 │   ├── generate_demo.py
+│   ├── run_demo.sh
+│   ├── pitchflow-demo-video.mp4
 │   ├── generated-output.mp4
 │   ├── generated-output.srt
 │   ├── generated-cover.png
 │   └── generated-metadata.json
+├── assets/
+│   ├── logo.png
+│   └── cover.png
 └── data/
     ├── uploads/
     └── outputs/
@@ -145,7 +150,8 @@ python examples/generate_demo.py
 ```
 
 You will get:
-- `examples/generated-output.mp4`
+- `examples/pitchflow-demo-video.mp4` — narrated product intro + auto-generated pitch video
+- `examples/generated-output.mp4` — the auto-generated pitch video only
 - `examples/generated-output.srt`
 - `examples/generated-cover.png`
 - `examples/generated-metadata.json`
